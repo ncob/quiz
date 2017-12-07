@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -13,9 +14,12 @@ import (
 
 // Kudos:
 // https://tutorialedge.net/golang/reading-console-input-golang/
-
+// https://gobyexample.com/command-line-flags
 func main() {
-	file, err := os.Open("problems.csv")
+	filename := flag.String("a", "problems.csv", "The quiz file")
+	flag.Parse()
+
+	file, err := os.Open(*filename)
 	if err != nil {
 		log.Fatal("Could not open file")
 	}
@@ -23,7 +27,7 @@ func main() {
 
 	b, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Fatal("Couldn't read file")
+		log.Fatal("Could not read file")
 	}
 	r := csv.NewReader(bytes.NewReader(b))
 
